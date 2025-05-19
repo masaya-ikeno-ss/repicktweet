@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import in.tech_camp.repicktweet.entity.TweetEntity;
+import in.tech_camp.repicktweet.form.TweetForm;
 import in.tech_camp.repicktweet.repository.TweetRepository;
 import lombok.AllArgsConstructor;
+
 
 
 @Controller
@@ -23,4 +25,9 @@ public class TweetController {
     return "tweets/index";
   }
   
+  @GetMapping("/tweets/new")
+  public String showNewTweet(Model model) {
+  model.addAttribute("tweetForm", new TweetForm());
+  return "tweets/new";
+  }
 }

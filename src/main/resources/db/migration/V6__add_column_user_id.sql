@@ -1,0 +1,2 @@
+ALTER TABLE tweets
+ADD COLUMN user_id INTEGER NOT NULL REFERENCES users(id);

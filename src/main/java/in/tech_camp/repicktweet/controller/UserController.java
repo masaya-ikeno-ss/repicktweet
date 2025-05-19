@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import in.tech_camp.repicktweet.entity.UserEntity;
 import in.tech_camp.repicktweet.form.UserForm;
 import in.tech_camp.repicktweet.repository.UserRepository;
+import in.tech_camp.repicktweet.service.UserService;
 import lombok.AllArgsConstructor;
 
 
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserController {
   private final UserRepository userRepository;
+  private final UserService userService;
 
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model) {
@@ -55,7 +57,7 @@ public class UserController {
     userEntity.setPassword(userForm.getPassword());
 
     try {
-      userRepository.insert(userEntity);
+      userService.createUserWithEncryptedPassword(userEntity);
     } catch (Exception e) {
       System.out.println("エラー：" + e);
       return "redirect:/";

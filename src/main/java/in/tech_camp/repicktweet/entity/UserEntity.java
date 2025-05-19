@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserEntity {
   private Integer id;
-  private String nickName;
+  private String nickname;
   private String email;
   private String password;
 }

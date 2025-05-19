@@ -935,7 +935,7 @@ div.contents.row div.content_post .more ul.more_list li a:hover {
   color: #fff;
 }
 
-div.contents.row div.content_post p {
+div.contents.row div.content_post h3 {
   position: absolute;
   left: 30px;
   right: 100px;
@@ -947,7 +947,7 @@ div.contents.row div.content_post p {
   text-shadow: 0 0 2px #000, 0 0 1px #000, 0 0 1px #000;
 }
 
-div.contents.row div.content_post span.name {
+div.contents.row div.content_post p {
   position: absolute;
   right: 30px;
   bottom: 30px;

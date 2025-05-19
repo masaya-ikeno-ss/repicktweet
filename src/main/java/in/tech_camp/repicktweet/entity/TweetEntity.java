@@ -8,6 +8,7 @@ import lombok.Data;
 public class TweetEntity {
   private Integer id;
   private String title;
+  private UserEntity user;
   private String content;
   private String imageUrl;
   private Timestamp createdAt;

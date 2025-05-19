@@ -37,6 +37,9 @@ public class UserController {
     Model model
   ) {
     userForm.validatePasswordConfirmation(result);
+    if (userRepository.existsByEmail(userForm.getEmail())) {
+      result.rejectValue("email", "null", "このメールアドレスは既に登録されています");
+    }
     if (result.hasErrors()) {
       List<String> errorMessages = result.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)

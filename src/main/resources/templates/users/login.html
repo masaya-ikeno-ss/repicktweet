@@ -6,6 +6,31 @@
     <title>PicTweet</title>
 </head>
 <body>
-  
+  <div th:insert="~{header :: header}"></div>
+
+  <div class="contents now">
+    <div class="container">
+      <h2>Log in</h2>
+      <p th:if="${loginError}" class="login-error" th:next="${loginError}"></p>
+
+      <form th:method="post" th:action="@{/login}" class="new_user">
+        <div class="field">
+          <label class="column-title">Email</label><br />
+          <input type="text" id="email" autofocus="autofocus" required="required" />
+        </div>
+
+        <div class="field">
+          <label class="password">Password</label><br />
+          <input type="password" id="password" required="required" />
+        </div>
+
+        <div class="actions">
+          <input type="submit" value="Log in">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>

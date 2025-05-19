@@ -16,6 +16,7 @@ import in.tech_camp.repicktweet.entity.UserEntity;
 import in.tech_camp.repicktweet.form.UserForm;
 import in.tech_camp.repicktweet.repository.UserRepository;
 import in.tech_camp.repicktweet.service.UserService;
+import in.tech_camp.repicktweet.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 
@@ -34,7 +35,7 @@ public class UserController {
 
   @PostMapping("/user")
   public String createUser(
-    @ModelAttribute("userForm") @Validated() UserForm userForm,
+    @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
     BindingResult result,
     Model model
   ) {

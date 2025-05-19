@@ -1,0 +1,2 @@
+ALTER TABLE tweets
+RENAME COLUMN name TO title;

@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @Controller
 @AllArgsConstructor
 public class UserController {
@@ -67,5 +68,9 @@ public class UserController {
     return "redirect:/";
   }
   
+  @GetMapping("/users/login")
+  public String showLogin() {
+      return "users/login";
+  }
   
 }

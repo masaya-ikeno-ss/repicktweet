@@ -16,12 +16,12 @@
       <form th:method="post" th:action="@{/login}" class="new_user">
         <div class="field">
           <label class="column-title">Email</label><br />
-          <input type="text" id="email" autofocus="autofocus" required="required" />
+          <input type="text" id="email" name="email" autofocus="autofocus" required="required" />
         </div>
 
         <div class="field">
           <label class="password">Password</label><br />
-          <input type="password" id="password" required="required" />
+          <input type="password" id="password" name="password" required="required" />
         </div>
 
         <div class="actions">

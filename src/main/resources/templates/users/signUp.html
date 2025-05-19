@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <title>Re:PicTweet</title>
+</head>
+<body>
+  <div th:insert="~{header :: header}"></div>
+
+  <div class="contents row">
+    <div class="container">
+      <h2>Sign up</h2>
+      <div class="form">
+        <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
+          <div th:text="${error}"></div>
+        </div>
+        <form th:action="@{/user}" th:method="post" th:object="${userForm}", class="new_user">
+          <div class="field">
+            <label for="nickname">ニックネーム</label><em>20文字以内で入力してください</em><br />
+            <input type="text" id="nickname" th:field="*{nickname}" autofocus="autofocus" />
+          </div>
+
+          <div class="field">
+            <label for="email">メールアドレス</label><br />
+            <input type="email" id="email" th:field="*{email}" />
+          </div>
+
+          <div class="field">
+            <label for="password">パスワード</label><em>6文字以上128文字以内で入力してください</em><br />
+            <input type="password" id="password" th:field="*{password}" />
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <label for="password_confirmation">確認用パスワード</label><em>6文字以上128文字以内で入力してください</em><br />
+            </div>
+            <div class="field-input">
+              <input type="password" id="password_confirmation" th:field="*{passwordConfirmation}" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <input type="submit" value="Sign up">
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

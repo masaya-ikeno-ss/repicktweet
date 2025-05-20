@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.repicktweet.custom_user.CustomUserDetail;
 import in.tech_camp.repicktweet.entity.TweetEntity;
 import in.tech_camp.repicktweet.form.TweetForm;
 import in.tech_camp.repicktweet.repository.TweetRepository;
@@ -42,16 +44,21 @@ public class TweetController {
   }
 
   @PostMapping("/tweets")
-  public String createTweet(@ModelAttribute("tweetForm") TweetForm tweetForm) {
+  public String createTweet(
+    @ModelAttribute("tweetForm") TweetForm tweetForm,
+    @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+
     TweetEntity tweet = new TweetEntity();
     tweet.setTitle(tweetForm.getTitle());
     tweet.setContent(tweetForm.getContent());
-    // UserIdが渡せていない
-    tweet.setUserId(1);
+
+    Integer userId = customUserDetail.getUser().getId();
+    tweet.setUserId(userId);
+
     MultipartFile imageFile= tweetForm.getImageFile();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = "src/main/resources/static/uploads";
+        String uploadDir = "/home/masayaikeno/java_projects/repicktweet/uploads";
 
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);

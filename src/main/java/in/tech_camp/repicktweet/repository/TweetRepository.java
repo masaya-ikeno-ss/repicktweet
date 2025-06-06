@@ -30,4 +30,7 @@ public interface TweetRepository {
 
   @Update("UPDATE tweets SET deleted_at = CURRENT_TIMESTAMP WHERE id = #{id}")
   void deleteTweet(Integer id);
+
+  @Select("SELECT * FROM tweets WHERE id = #{id} AND deleted_at IS null")
+  TweetEntity findById(Integer id);
 }

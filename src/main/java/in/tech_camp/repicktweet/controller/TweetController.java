@@ -26,6 +26,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @Controller
 @AllArgsConstructor
 public class TweetController {
@@ -43,6 +44,24 @@ public class TweetController {
   model.addAttribute("tweetForm", new TweetForm());
   return "tweets/new";
   }
+
+  @GetMapping("/tweets/{tweetId}/edit")
+  public String editTweet(
+    @PathVariable("tweetId") Integer tweetId,
+    Model model
+    ) {
+      TweetEntity tweet = tweetRepository.findById(tweetId);
+
+      TweetForm tweetForm = new TweetForm();
+      tweetForm.setTitle(tweet.getTitle());
+      tweetForm.setContent(tweet.getContent());
+      tweetForm.setImageUrl(tweet.getImageUrl());
+
+      model.addAttribute("tweetForm", tweetForm);
+      model.addAttribute("tweetId", tweetId);
+      return "tweets/edit";
+  }
+  
 
   @PostMapping("/tweets")
   public String createTweet(

@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,7 +80,7 @@ public class TweetController {
     return "redirect:/";
   }
   
-  @DeleteMapping("/tweets/{tweetId}/delete")
+  @PostMapping("/tweets/{tweetId}/delete")
   public String delete(@PathVariable("tweetId") Integer tweetId) {
     try {
       tweetRepository.deleteTweet(tweetId);

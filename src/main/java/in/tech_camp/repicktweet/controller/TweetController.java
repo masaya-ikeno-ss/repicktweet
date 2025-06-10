@@ -154,6 +154,21 @@ public class TweetController {
       MultipartFile imageFile= tweetForm.getImageFile();
       if (imageFile != null && !imageFile.isEmpty()) {
         try {
+
+          // 旧画像ファイルの削除
+          String oldImageUrl = tweetForm.getImageUrl(); // "/uploads/xxxx.png"
+          if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
+            String fileName = oldImageUrl.substring(oldImageUrl.lastIndexOf("/") + 1);
+            String projectRoot = System.getProperty("user.dir");
+            String fullUploadDir = projectRoot + java.io.File.separator + uploadDir;
+            Path oldImagePath = Paths.get(fullUploadDir, fileName);
+            try {
+                Files.deleteIfExists(oldImagePath);
+            } catch (IOException e) {
+                System.out.println("削除エラー: " + e.getMessage());
+            }
+          }
+
           // プロジェクトのカレントディレクトリ/app.upload.dir の指定
           String projectRoot = System.getProperty("user.dir");
           String fullUploadDir = projectRoot + java.io.File.separator + uploadDir;

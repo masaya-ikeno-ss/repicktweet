@@ -14,6 +14,10 @@ public class TweetForm {
 
   @NotBlank(message = "投稿内容を入力してください", groups = ValidationPriority1.class)
   private String content;
-  
+
+  // 新規・差し替え画像用
   private MultipartFile imageFile;
+
+  // 既存画像表示用
+  private String imageUrl;
 }

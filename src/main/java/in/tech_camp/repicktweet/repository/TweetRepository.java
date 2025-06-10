@@ -14,7 +14,7 @@ import in.tech_camp.repicktweet.entity.TweetEntity;
 
 @Mapper
 public interface TweetRepository {
-  @Select("SELECT * FROM tweets WHERE deleted_at IS null")
+  @Select("SELECT * FROM tweets WHERE deleted_at IS null ORDER BY created_at DESC")
   @Results({
     @Result(property = "userId", column = "user_id"),
     @Result(property = "imageUrl", column = "image_url"),
@@ -41,7 +41,7 @@ public interface TweetRepository {
   })
   TweetEntity findById(Integer id);
 
-  @Select("SELECT * FROM tweets WHERE user_id = #{userId} AND deleted_at IS null")
+  @Select("SELECT * FROM tweets WHERE user_id = #{userId} AND deleted_at IS null ORDER BY created_at DESC")
   @Results({
     @Result(property = "userId", column = "user_id"),
     @Result(property = "imageUrl", column = "image_url"),

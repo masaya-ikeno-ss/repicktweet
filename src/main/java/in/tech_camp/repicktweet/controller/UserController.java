@@ -10,11 +10,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import in.tech_camp.repicktweet.entity.TweetEntity;
 import in.tech_camp.repicktweet.entity.UserEntity;
 import in.tech_camp.repicktweet.form.UserForm;
+import in.tech_camp.repicktweet.repository.TweetRepository;
 import in.tech_camp.repicktweet.repository.UserRepository;
 import in.tech_camp.repicktweet.service.UserService;
 import in.tech_camp.repicktweet.validation.ValidationOrder;
@@ -29,11 +32,26 @@ import lombok.AllArgsConstructor;
 public class UserController {
   private final UserRepository userRepository;
   private final UserService userService;
+  private final TweetRepository tweetRepository;
 
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model) {
     model.addAttribute("userForm", new UserForm());
     return "users/signUp";
+  }
+
+  @GetMapping("/users/{userId}")
+  public String showMyPage(
+    @PathVariable("userId") Integer userId,
+    Model model
+  ) {
+    UserEntity user = userRepository.findById(userId);
+    List<TweetEntity> tweets = tweetRepository.findByUserId(userId);
+
+    model.addAttribute("nickname", user.getNickname());
+    model.addAttribute("tweets", tweets);
+
+    return "users/mypage";
   }
 
   @PostMapping("/user")

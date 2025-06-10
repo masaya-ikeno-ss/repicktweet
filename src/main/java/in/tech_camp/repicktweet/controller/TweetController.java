@@ -26,11 +26,7 @@ import in.tech_camp.repicktweet.custom_user.CustomUserDetail;
 import in.tech_camp.repicktweet.entity.TweetEntity;
 import in.tech_camp.repicktweet.form.TweetForm;
 import in.tech_camp.repicktweet.repository.TweetRepository;
-
-
-
-
-
+import in.tech_camp.repicktweet.validation.ValidationOrder;
 
 
 @Controller
@@ -41,17 +37,17 @@ public class TweetController {
 
   private final TweetRepository tweetRepository;
 
-    public TweetController(TweetRepository tweetRepository) {
-        this.tweetRepository = tweetRepository;
-    }
-  
+  public TweetController(TweetRepository tweetRepository) {
+      this.tweetRepository = tweetRepository;
+  }
+
   @GetMapping("/")
   public String showTweets(Model model) {
     List<TweetEntity> tweets = tweetRepository.findAll();
     model.addAttribute("tweets", tweets);
     return "tweets/index";
   }
-  
+
   @GetMapping("/tweets/new")
   public String showNewTweet(Model model) {
   model.addAttribute("tweetForm", new TweetForm());
@@ -67,7 +63,6 @@ public class TweetController {
     model.addAttribute("tweet", tweet);
     return "tweets/detail";
   }
-  
 
   @GetMapping("/tweets/{tweetId}/edit")
   public String editTweet(
@@ -85,12 +80,21 @@ public class TweetController {
       model.addAttribute("tweetId", tweetId);
       return "tweets/edit";
   }
-  
 
   @PostMapping("/tweets")
   public String createTweet(
-    @ModelAttribute("tweetForm") TweetForm tweetForm,
-    @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+    @ModelAttribute("tweetForm") @Validated(ValidationOrder.class) TweetForm tweetForm,
+    BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail customUserDetail,
+    Model model) {
+      if (result.hasErrors()) {
+        List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+        model.addAttribute("errorMessages", errorMessages);
+        model.addAttribute("tweetForm", tweetForm);
+        return "tweets/new";
+      }
 
     TweetEntity tweet = new TweetEntity();
     tweet.setTitle(tweetForm.getTitle());

@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,6 @@ import in.tech_camp.repicktweet.custom_user.CustomUserDetail;
 import in.tech_camp.repicktweet.entity.TweetEntity;
 import in.tech_camp.repicktweet.form.TweetForm;
 import in.tech_camp.repicktweet.repository.TweetRepository;
-import lombok.AllArgsConstructor;
 
 
 
@@ -33,9 +33,16 @@ import lombok.AllArgsConstructor;
 
 
 @Controller
-@AllArgsConstructor
+// @AllArgsConstructor
 public class TweetController {
+  @Value("${app.upload.dir}")
+  private String uploadDir;
+
   private final TweetRepository tweetRepository;
+
+    public TweetController(TweetRepository tweetRepository) {
+        this.tweetRepository = tweetRepository;
+    }
   
   @GetMapping("/")
   public String showTweets(Model model) {
@@ -83,16 +90,19 @@ public class TweetController {
     MultipartFile imageFile= tweetForm.getImageFile();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = "/home/masayaikeno/java_projects/repicktweet/uploads";
+        String projectRoot = System.getProperty("user.dir");
+        String fullUploadDir = projectRoot + java.io.File.separator + uploadDir;
+        Files.createDirectories(Paths.get(fullUploadDir));
 
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
-        Path imagePath = Paths.get(uploadDir, fileName);
+        Path imagePath = Paths.get(fullUploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        tweet.setImageUrl("/uploads/" + fileName);
-      } catch (IOException e) {
+
+        tweet.setImageUrl("/" + uploadDir.replace("\\", "/") + fileName); // 例: /uploads/xxxx.jpg
+    } catch (IOException e) {
         System.out.println("エラー：" + e);
         return "tweets/new";
-      }
+    }
     }
 
     try {
@@ -128,16 +138,20 @@ public class TweetController {
       MultipartFile imageFile= tweetForm.getImageFile();
       if (imageFile != null && !imageFile.isEmpty()) {
         try {
-          String uploadDir = "/home/masayaikeno/java_projects/repicktweet/uploads";
+          // プロジェクトのカレントディレクトリ/app.upload.dir の指定
+          String projectRoot = System.getProperty("user.dir");
+          String fullUploadDir = projectRoot + java.io.File.separator + uploadDir;
+          Files.createDirectories(Paths.get(fullUploadDir)); // ディレクトリなければ作成
 
           String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
-          Path imagePath = Paths.get(uploadDir, fileName);
+          Path imagePath = Paths.get(fullUploadDir, fileName);
           Files.copy(imageFile.getInputStream(), imagePath);
-          tweet.setImageUrl("/uploads/" + fileName);
-        } catch (IOException e) {
+
+          tweet.setImageUrl("/" + uploadDir.replace("\\", "/") + fileName); // /uploads/xxxx など
+      } catch (IOException e) {
           System.out.println("エラー：" + e);
           return "tweets/edit";
-        }
+      }
       } else {
         tweet.setImageUrl(tweetForm.getImageUrl());
       }

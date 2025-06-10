@@ -32,6 +32,7 @@ import in.tech_camp.repicktweet.repository.TweetRepository;
 
 
 
+
 @Controller
 // @AllArgsConstructor
 public class TweetController {
@@ -56,6 +57,17 @@ public class TweetController {
   model.addAttribute("tweetForm", new TweetForm());
   return "tweets/new";
   }
+
+  @GetMapping("/tweets/{tweetId}")
+  public String showTweetDetail(
+    @PathVariable("tweetId") Integer tweetId,
+    Model model
+  ) {
+    TweetEntity tweet = tweetRepository.findById(tweetId);
+    model.addAttribute("tweet", tweet);
+    return "tweets/detail";
+  }
+  
 
   @GetMapping("/tweets/{tweetId}/edit")
   public String editTweet(

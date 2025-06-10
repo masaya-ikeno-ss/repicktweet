@@ -15,6 +15,9 @@
         <span><img th:src="@{/images/arrow_top.png}" /></span>
         <ul class="more_list">
           <li>
+            <a th:href="@{/tweets/{tweetId}(tweetId=${tweet.id})}">詳細</a>
+          </li>
+          <li>
             <a th:href="@{/tweets/{tweetId}/edit(tweetId=${tweet.id})}" class="update-btn">編集</a>
           </li>
           <li>

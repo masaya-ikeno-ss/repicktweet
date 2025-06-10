@@ -10,27 +10,8 @@
   <div th:insert="~{header :: header}"></div>
 
   <div class="contents row">
-    <div th:each="tweet : ${tweets}" class="content_post" th:style="'background-image: url(' + (${tweet.imageUrl}) + ');'">
-      <div class="more">
-        <span><img th:src="@{/images/arrow_top.png}" /></span>
-        <ul class="more_list">
-          <li>
-            <a th:href="@{/tweets/{tweetId}(tweetId=${tweet.id})}">詳細</a>
-          </li>
-          <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == tweet.userId}">
-            <li>
-              <a th:href="@{/tweets/{tweetId}/edit(tweetId=${tweet.id})}" class="update-btn">編集</a>
-            </li>
-            <li>
-              <form th:action="@{/tweets/{tweetId}/delete(tweetId=${tweet.id})}" th:method="post">
-                <input type="submit" class="delete-btn" value="削除">
-              </form>
-            </li>
-          </div>
-        </ul>
-      </div>
-      <h3 th:text="${tweet.title}"></h3>
-      <p class="name" th:text="${tweet.content}"></p>
+    <div th:each="tweet : ${tweets}">
+      <div th:replace="~{tweets/tweet :: content(tweet=${tweet})}"></div>
     </div>
   </div>
 

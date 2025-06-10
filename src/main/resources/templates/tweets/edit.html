@@ -21,6 +21,7 @@
       <div th:if="${tweetForm.imageUrl}">
         <label>現在の画像</label>
         <img th:src="@{${tweetForm.imageUrl}}" alt="画像" style="max-width: 200px; display: block;" />
+        <input type="hidden" th:field="*{imageUrl}" />
       </div>
 
       <input type="file" th:field="*{imageFile}" />

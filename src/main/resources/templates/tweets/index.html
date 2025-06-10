@@ -17,14 +17,16 @@
           <li>
             <a th:href="@{/tweets/{tweetId}(tweetId=${tweet.id})}">詳細</a>
           </li>
-          <li>
-            <a th:href="@{/tweets/{tweetId}/edit(tweetId=${tweet.id})}" class="update-btn">編集</a>
-          </li>
-          <li>
-            <form th:action="@{/tweets/{tweetId}/delete(tweetId=${tweet.id})}" th:method="post">
-              <input type="submit" class="delete-btn" value="削除">
-            </form>
-          </li>
+          <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == tweet.userId}">
+            <li>
+              <a th:href="@{/tweets/{tweetId}/edit(tweetId=${tweet.id})}" class="update-btn">編集</a>
+            </li>
+            <li>
+              <form th:action="@{/tweets/{tweetId}/delete(tweetId=${tweet.id})}" th:method="post">
+                <input type="submit" class="delete-btn" value="削除">
+              </form>
+            </li>
+          </div>
         </ul>
       </div>
       <h3 th:text="${tweet.title}"></h3>

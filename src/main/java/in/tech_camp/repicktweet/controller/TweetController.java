@@ -28,6 +28,7 @@ import in.tech_camp.repicktweet.form.TweetForm;
 import in.tech_camp.repicktweet.repository.TweetRepository;
 import in.tech_camp.repicktweet.validation.ValidationOrder;
 
+
 @Controller
 // @AllArgsConstructor
 public class TweetController {
@@ -36,9 +37,9 @@ public class TweetController {
 
   private final TweetRepository tweetRepository;
 
-    public TweetController(TweetRepository tweetRepository) {
-        this.tweetRepository = tweetRepository;
-    }
+  public TweetController(TweetRepository tweetRepository) {
+      this.tweetRepository = tweetRepository;
+  }
 
   @GetMapping("/")
   public String showTweets(Model model) {
